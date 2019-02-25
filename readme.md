@@ -57,7 +57,7 @@ const HexnutContext = React.createContext(client);
 
 reactDOM.render(
   document.getElementById('root'),
-  <HexnutContext.Provider>
+  <HexnutContext.Provider value={client}>
     <App/>
   </HexnutContext.Provider>
 );
