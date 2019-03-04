@@ -8,7 +8,5 @@
   },
   "author": "Francis Stokes",
   "license": "MIT",
-  "dependencies": {
-    "ws": "^6.1.4"
-  }
+  "dependencies": {}
 }

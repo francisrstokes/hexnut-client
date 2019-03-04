@@ -1,4 +1,3 @@
-const WebSocket = require('ws');
 const createContext = require('./ctx');
 
 class HexNutClient {
@@ -22,26 +21,23 @@ class HexNutClient {
   }
 
   connect(remoteAddress) {
-    this.client = new WebSocket(remoteAddress, this.config);
+    this.client = new WebSocket(remoteAddress);
     const ctx = createContext(this, 'connection');
 
-    this.client.on('open', () => this.runMiddleware(ctx));
+    this.client.onopen = () => this.runMiddleware(ctx);
+    this.client.onerror = err => this.onError(err, ctx);
 
-    this.client.on('message', msg => {
-      ctx.message = msg;
+    this.client.onmessage = msg => {
+      ctx.message = msg.data;
       ctx.type = 'message';
       this.runMiddleware(ctx);
-    });
+    };
 
-    this.client.on('close', () => {
+    this.client.onclose = () => {
       ctx.message = undefined;
       ctx.type = 'close';
       this.runMiddleware(ctx);
-    });
-
-    this.client.on('error', err => {
-      this.onError(err, ctx);
-    });
+    };
   }
 
   send(...args) {
