@@ -62,3 +62,41 @@ reactDOM.render(
   </HexnutContext.Provider>
 );
 ```
+
+
+### useHexnutMiddleware hook for react
+
+This hook can be used when a react component (most likely a view) should control the middleware chain. It clears all the middleware and sets the chain provided to the hook.
+
+```javascript
+const useHexnutMiddleware = middlewareArray => {
+  const middlewareStr = middlewareArray.map(mw => mw.toString()).join('');
+  useEffect(() => {
+    client.middleware.splice();
+    middlewareArray.forEach(middleware => client.use(middleware));
+  }, [middlewareStr]);
+};
+
+
+// Then, inside a function component
+const MyComponent = props => {
+  const client = useContext(clientContext);
+  const [receivedMsg, setReceivedMsg] = useState(false);
+
+  useHexnutMiddleware([
+    bodyparser.json(),
+    ctx => {
+      if (ctx.isMessage) {
+        setReceivedMsg(true);
+        if (ctx.message.type === 'showProps') {
+          ctx.send(JSON.stringify(props));
+        }
+      }
+    }
+  ]);
+
+  return receivedMsg
+    ? <div>We got a message</div>
+    : <div>Radio silence</div>;
+}
+```
