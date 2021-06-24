@@ -1,12 +1,17 @@
 const createContext = require('./ctx');
 
 class HexNutClient {
-  constructor(wsConfig = {}) {
+  constructor(wsConfig = {}, WebsocketClientImpl = null) {
     this.config = {
       ...wsConfig
     };
     this.client = null;
     this.middleware = [];
+
+    this.WebsocketClientImpl = WebsocketClientImpl
+      ? WebsocketClientImpl
+      : Websocket;
+    console.log(this.WebsocketClientImpl);
   }
 
   use(middleware) {
@@ -21,7 +26,7 @@ class HexNutClient {
   }
 
   connect(remoteAddress) {
-    this.client = new WebSocket(remoteAddress);
+    this.client = new this.WebsocketClientImpl(remoteAddress);
     const ctx = createContext(this, 'connection');
 
     this.client.onopen = () => this.runMiddleware(ctx);

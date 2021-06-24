@@ -11,7 +11,7 @@ declare type Ctx<CtxExtensions> = CtxExtensions & {
   send(...args: Array<any>): void;
   isConnection: boolean;
   isMessage: boolean;
-  client: WebSocket;
+  client: any;
   type: MessageType;
   message: any;
 };
@@ -19,8 +19,7 @@ declare type Ctx<CtxExtensions> = CtxExtensions & {
 declare type MiddlewareFunction<CtxExtensions> = (ctx: Ctx<CtxExtensions>, next: () => any) => Promise<any> | any;
 
 declare class HexNutClient<CtxExtensions> {
-  constructor();
-  constructor(wsConfig: IConfig);
+  constructor(wsConfig?: IConfig, WebsocketClientImpl?: any);
   use(middleware: MiddlewareFunction<CtxExtensions>);
   connect(address: string): void;
   send(...args: Array<any>): void;
