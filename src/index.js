@@ -52,7 +52,7 @@ class HexNutClient {
   }
 
   isReady() {
-    return this.client && this.client.readyState === WebSocket.OPEN;
+    return this.client && this.client.readyState === this.WebsocketClientImpl.OPEN;
   }
 
   runMiddleware(ctx) {
