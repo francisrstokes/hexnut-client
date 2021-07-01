@@ -5,9 +5,9 @@
 
 import { IConfig } from "websocket";
 
-declare type MessageType = 'connection' | 'message' | 'close';
+export declare type MessageType = 'connection' | 'message' | 'close';
 
-declare type Ctx<CtxExtensions> = CtxExtensions & {
+export declare type Ctx<CtxExtensions> = CtxExtensions & {
   send(...args: Array<any>): void;
   isConnection: boolean;
   isMessage: boolean;
@@ -16,7 +16,7 @@ declare type Ctx<CtxExtensions> = CtxExtensions & {
   message: any;
 };
 
-declare type MiddlewareFunction<CtxExtensions> = (ctx: Ctx<CtxExtensions>, next: () => any) => Promise<any> | any;
+export declare type MiddlewareFunction<CtxExtensions> = (ctx: Ctx<CtxExtensions>, next: () => any) => Promise<any> | any;
 
 declare class HexNutClient<CtxExtensions> {
   constructor(wsConfig?: IConfig, WebsocketClientImpl?: any);
