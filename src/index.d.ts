@@ -7,14 +7,14 @@ import { IConfig } from "websocket";
 
 export declare type MessageType = 'connection' | 'message' | 'close';
 
-export declare type Ctx<CtxExtensions> = CtxExtensions & {
+export declare type Ctx<CtxExtensions> = CtxExtensions & Omit<{
   send(...args: Array<any>): void;
   isConnection: boolean;
   isMessage: boolean;
   client: any;
   type: MessageType;
   message: any;
-};
+}, keyof CtxExtensions>;
 
 export declare type MiddlewareFunction<CtxExtensions> = (ctx: Ctx<CtxExtensions>, next: () => any) => Promise<any> | any;
 
