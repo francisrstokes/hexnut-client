@@ -44,6 +44,10 @@ class HexNutClient {
     };
   }
 
+  close() {
+    this.client.close();
+  }
+
   send(...args) {
     if (this.isReady()) {
       this.client.send(...args);

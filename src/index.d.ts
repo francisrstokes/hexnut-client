@@ -25,6 +25,7 @@ declare class HexNutClient<CtxExtensions> {
   send(...args: Array<any>): void;
   isReady(): boolean;
   onerror: (err: Error, ctx: Ctx<CtxExtensions>) => void;
+  close: () => void;
 }
 
 export default HexNutClient;
