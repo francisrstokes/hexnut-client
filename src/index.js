@@ -39,7 +39,7 @@ class HexNutClient {
 
     this.client.onclose = () => {
       ctx.message = undefined;
-      ctx.type = 'close';
+      ctx.type = 'closing';
       this.runMiddleware(ctx);
     };
   }
