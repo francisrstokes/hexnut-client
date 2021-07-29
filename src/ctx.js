@@ -9,6 +9,10 @@ const ctx = {
 
   get isMessage() {
     return this.type === 'message';
+  },
+
+  get isClosing() {
+    return this.type === 'closing';
   }
 };
 

@@ -5,12 +5,13 @@
 
 import { IConfig } from "websocket";
 
-export declare type MessageType = 'connection' | 'message' | 'close';
+export declare type MessageType = 'connection' | 'message' | 'closing';
 
 export declare type Ctx<CtxExtensions> = CtxExtensions & Omit<{
   send(...args: Array<any>): void;
   isConnection: boolean;
   isMessage: boolean;
+  isClosing: boolean;
   client: any;
   type: MessageType;
   message: any;
