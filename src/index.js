@@ -1,4 +1,5 @@
 const createContext = require('./ctx');
+const fastq = require('fastq');
 
 class HexNutClient {
   constructor(wsConfig = {}, WebsocketClientImpl = null) {
@@ -7,6 +8,7 @@ class HexNutClient {
     };
     this.client = null;
     this.middleware = [];
+    this.runSequencer = Promise.resolve();
 
     this.WebsocketClientImpl = WebsocketClientImpl
       ? WebsocketClientImpl
@@ -28,19 +30,26 @@ class HexNutClient {
     this.client = new this.WebsocketClientImpl(remoteAddress);
     const ctx = createContext(this, 'connection');
 
-    this.client.onopen = () => this.runMiddleware(ctx);
+    this.client.onopen = () => {
+      this.runSequencer = this.runSequencer.then(() => this.runMiddleware(ctx));
+    }
+
     this.client.onerror = err => this.onError(err, ctx);
 
     this.client.onmessage = msg => {
-      ctx.message = msg.data;
-      ctx.type = 'message';
-      this.runMiddleware(ctx);
+      this.runSequencer = this.runSequencer.then(() => {
+        ctx.message = msg.data;
+        ctx.type = 'message';
+        return this.runMiddleware(ctx);
+      });
     };
 
     this.client.onclose = () => {
-      ctx.message = undefined;
-      ctx.type = 'closing';
-      this.runMiddleware(ctx);
+      this.runSequencer = this.runSequencer.then(() => {
+        ctx.message = null;
+        ctx.type = 'closing';
+        return this.runMiddleware(ctx);
+      });
     };
   }
 
