@@ -1,5 +1,4 @@
 const createContext = require('./ctx');
-const fastq = require('fastq');
 
 class HexNutClient {
   constructor(wsConfig = {}, WebsocketClientImpl = null) {
