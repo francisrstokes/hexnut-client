@@ -11,7 +11,7 @@ class HexNutClient {
 
     this.WebsocketClientImpl = WebsocketClientImpl
       ? WebsocketClientImpl
-      : Websocket;
+      : WebSocket;
   }
 
   use(middleware) {
